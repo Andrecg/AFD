@@ -2,6 +2,7 @@ package AFD;
 
 public class Main {
 	
+	//Test if character is a number {0:9}
 	static boolean isNumber(char symbol) {
 		switch(symbol) {
 			case '0':
@@ -20,6 +21,7 @@ public class Main {
 		}
 	}
 	
+	//Test if character is a letter {Aa:zZ}
 	static boolean isAlph(char symbol) {
 		switch(symbol) {
 			case 'a':
@@ -78,6 +80,7 @@ public class Main {
 		}
 	}
 	
+	//Test if character is a special character
 	static boolean isSpecial(char symbol) {
 		switch(symbol) {
 			case '!':
@@ -119,18 +122,22 @@ public class Main {
 	}
 	
 	enum States implements State {
-
-		S0 {
+		
+		//All final states (S2,S4,S6,S8) return to Initial State (S0)
+		
+		S0 { //INITIAL STATE
 			@Override
 	        public State next(char symbol) {
 				if(isNumber(symbol)) return S3;
-				else if(isAlph(symbol)) return S0; //S5
+				else if(isAlph(symbol)) return S7;
 				else if(symbol == '"') return S1;
-				else return S0; //ERROR
+				else if(symbol == ' ') return S0;
+				else if(symbol == '\n') return S0;
+				else return S10; //ERROR
 	        }
 		},
 		
-		S1 {
+		S1 { 
 			@Override
 	        public State next(char symbol) {
 				if((symbol == ' ') || isNumber(symbol) || isAlph(symbol) || isSpecial(symbol)) return S1;
@@ -143,7 +150,7 @@ public class Main {
 		S2 { //STRING
 			@Override
 	        public State next(char symbol) {
-				return S2;
+				return S0;
 	        }
 			
 		},
@@ -160,7 +167,7 @@ public class Main {
 		S4 { //INTEGER
 			@Override
 	        public State next(char symbol) {
-				return S4;
+				return S0;
 	        }
 			
 		},
@@ -176,7 +183,23 @@ public class Main {
 		S6 { //REAL
 			@Override
 	        public State next(char symbol) {
-				return S6;
+				return S0;
+	        }
+			
+		},
+		S7 { 
+			@Override
+	        public State next(char symbol) {
+				if(isNumber(symbol) || isAlph(symbol)) return S7;
+				else if(symbol == ' ' || symbol == '\n' || symbol == ':') return S8;
+				else return S10;
+	        }
+			
+		},
+		S8 { //IDENTIFIER or RESERVED WORD
+			@Override
+	        public State next(char symbol) {
+				return S0;
 	        }
 			
 		},
@@ -191,16 +214,14 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		Automata aut1 = new Automata('"' + "string" + '"');
-		Automata aut2 = new Automata("1 ");
-		Automata aut3 = new Automata("212311 ");
-		Automata aut4 = new Automata("1.0 ");
-		Automata aut5 = new Automata("12323.01123 ");
-		System.out.println(aut1.find());
-		System.out.println(aut2.find());
-		System.out.println(aut3.find());
-		System.out.println(aut4.find());
-		System.out.println(aut5.find());
-		
+		//Run an example with several tokens inside one string 'simulating' a visuAlg file
+		Automata aut1 = new Automata(	'"' + "string" + '"' + 
+										" 1\n" +
+										"212311\n" + 
+										"1.0 " + 
+										"12323.01123 " + 
+										"algoritmo " +
+										"teste1:");
+		aut1.find();
 	}
 }

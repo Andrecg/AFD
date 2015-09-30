@@ -121,13 +121,16 @@ public class Main {
 		
 	}
 	
+	static String read = "";
+	
 	enum States implements State {
 		
 		//All final states (S2,S4,S6,S8) return to Initial State (S0)
-		
 		S0 { //INITIAL STATE
 			@Override
 	        public State next(char symbol) {
+				read = "";
+				read += symbol;
 				if(isNumber(symbol)) return S3;
 				else if(isAlph(symbol)) return S7;
 				else if(symbol == '"') return S1;
@@ -135,80 +138,162 @@ public class Main {
 				else if(symbol == '\n') return S0;
 				else return S10; //ERROR
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 		},
 		
 		S1 { 
 			@Override
 	        public State next(char symbol) {
-				if((symbol == ' ') || isNumber(symbol) || isAlph(symbol) || isSpecial(symbol)) return S1;
-				else if(symbol == '"') return S2;
-				else return S10; //ERROR
+				if((symbol == ' ') || isNumber(symbol) || isAlph(symbol) || isSpecial(symbol)) {
+					read += symbol;
+					return S1;
+				}
+				else if(symbol == '"') {
+					read += symbol;
+					return S2;
+				}
+				else {
+					read += symbol;
+					return S10; //ERROR
+				}
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		},
 		
 		S2 { //STRING
 			@Override
 	        public State next(char symbol) {
+				System.out.print(read);
 				return S0;
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		},
 		S3 { 
 			@Override
 	        public State next(char symbol) {
-				if(isNumber(symbol)) return S3;
+				if(isNumber(symbol)) {
+					read += symbol;
+					return S3;
+				}
 				else if(symbol == ' ' || symbol == '\n') return S4;
-				else if(symbol == '.') return S5;
-				else return S10; //ERROR
+				else if(symbol == '.') {
+					read += symbol;
+					return S5;
+				}
+				else {
+					read += symbol;
+					return S10; //ERROR
+				}
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		},
 		S4 { //INTEGER
 			@Override
 	        public State next(char symbol) {
+				System.out.print(read);
 				return S0;
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		},
 		S5 {
 			@Override
 	        public State next(char symbol) {
-				if(isNumber(symbol)) return S5;
+				if(isNumber(symbol)) {
+					read += symbol;
+					return S5;
+				}
 				else if(symbol == ' ' || symbol == '\n') return S6;
 				else return S10; //ERROR
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		},
 		S6 { //REAL
 			@Override
 	        public State next(char symbol) {
+				System.out.print(read);
 				return S0;
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		},
 		S7 { 
 			@Override
 	        public State next(char symbol) {
-				if(isNumber(symbol) || isAlph(symbol)) return S7;
-				else if(symbol == ' ' || symbol == '\n' || symbol == ':') return S8;
-				else return S10;
+				if(isNumber(symbol) || isAlph(symbol)) {
+					read += symbol;
+					return S7;
+				}
+				else if(symbol == ' ' || symbol == '\n' || symbol == ':' || symbol == ',') return S8;
+				else {
+					read += symbol;
+					return S10;
+				}
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		},
 		S8 { //IDENTIFIER or RESERVED WORD
 			@Override
 	        public State next(char symbol) {
+				System.out.print(read);
 				return S0;
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		},
 		
 		S10 { //ERROR
 			@Override
 	        public State next(char symbol) {
-				return S10;
+				System.out.print(read);
+				return S0;
 	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
 			
 		};
 	}
@@ -221,7 +306,8 @@ public class Main {
 										"1.0 " + 
 										"12323.01123 " + 
 										"algoritmo " +
-										"teste1:");
+										"teste1:" +
+										"1A ");
 		aut1.find();
 	}
 }

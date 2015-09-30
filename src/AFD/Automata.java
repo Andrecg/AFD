@@ -14,6 +14,7 @@ public class Automata {
     private static final States ERROR = States.S10;
 	
     private final String str;
+    private Hashtable<String, String> hash;
     
     //Get input and create Hash
     public Automata(String str) {
@@ -23,79 +24,79 @@ public class Automata {
     
     //Initialing Hash
     private void createHash() {
-    	Hashtable<String, String> hash = new Hashtable<String, String>();
-    	hash.put("RES", "aleatorio");
-    	hash.put("RES", "abs");
-    	hash.put("RES", "algoritmo");
-    	hash.put("RES", "arccos");
-    	hash.put("RES", "arcsen");
-    	hash.put("RES", "arctan");
-    	hash.put("RES", "arquivo");
-    	hash.put("RES", "asc");
-    	hash.put("RES", "ate");
-    	hash.put("RES", "caracter");
-    	hash.put("RES", "caso");
-    	hash.put("RES", "compr");
-    	hash.put("RES", "copia");
-    	hash.put("RES", "cos");
-    	hash.put("RES", "cotan");
-    	hash.put("RES", "cronometro");
-    	hash.put("RES", "debug");
-    	hash.put("RES", "declare");
-    	hash.put("RES", "e");
-    	hash.put("RES", "eco");
-    	hash.put("RES", "enquanto");
-    	hash.put("RES", "entao");
-    	hash.put("RES", "escolha");
-    	hash.put("RES", "escreva");
-    	hash.put("RES", "exp");
-    	hash.put("RES", "faca");
-    	hash.put("RES", "falso");
-    	hash.put("RES", "fimalgoritmo");
-    	hash.put("RES", "fimenquanto");
-    	hash.put("RES", "fimescolha");
-    	hash.put("RES", "fimfuncao");
-    	hash.put("RES", "fimpara");
-    	hash.put("RES", "fimprocedimento");
-    	hash.put("RES", "fimrepita");
-    	hash.put("RES", "fimse");
-    	hash.put("RES", "funcao");
-    	hash.put("RES", "grauprad");
-    	hash.put("RES", "inicio");
-    	hash.put("RES", "int");
-    	hash.put("RES", "interrompa");
-    	hash.put("RES", "leia");
-    	hash.put("RES", "literal");
-    	hash.put("RES", "log");
-    	hash.put("RES", "logico");
-    	hash.put("RES", "logn");
-    	hash.put("RES", "maiusc");
-    	hash.put("RES", "mensagem");
-    	hash.put("RES", "minusc");
-    	hash.put("RES", "nao");
-    	hash.put("RES", "numerico");
-    	hash.put("RES", "numpcarac");
-    	hash.put("RES", "ou");
-    	hash.put("RES", "outrocaso");
-    	hash.put("RES", "para");
-    	hash.put("RES", "passo");
-    	hash.put("RES", "pausa");
-    	hash.put("RES", "pi");
-    	hash.put("RES", "pos");
-    	hash.put("RES", "procedimento");
-    	hash.put("RES", "quad");
-    	hash.put("RES", "radpgrau");
-    	hash.put("RES", "raizq");
-    	hash.put("RES", "rand");
-    	hash.put("RES", "randi");
-    	hash.put("RES", "repita");
-    	hash.put("RES", "se");
-    	hash.put("RES", "sen");
-    	hash.put("RES", "senao");
-    	hash.put("RES", "timer");
-    	hash.put("RES", "tan");
-    	hash.put("RES", "verdadeiro");
-    	hash.put("RES", "xou");
+    	hash = new Hashtable<String, String>();
+    	hash.put("aleatorio","RESERVED WORD");
+    	hash.put("abs","RESERVED WORD");
+    	hash.put("algoritmo","RESERVED WORD");
+    	hash.put("arccos","RESERVED WORD");
+    	hash.put("arcsen","RESERVED WORD");
+    	hash.put("arctan","RESERVED WORD");
+    	hash.put("arquivo","RESERVED WORD");
+    	hash.put("asc","RESERVED WORD");
+    	hash.put("ate","RESERVED WORD");
+    	hash.put("caracter","RESERVED WORD");
+    	hash.put("caso","RESERVED WORD");
+    	hash.put("compr","RESERVED WORD");
+    	hash.put("copia","RESERVED WORD");
+    	hash.put("cos","RESERVED WORD");
+    	hash.put("cotan","RESERVED WORD");
+    	hash.put("cronometro","RESERVED WORD");
+    	hash.put("debug","RESERVED WORD");
+    	hash.put("declare","RESERVED WORD");
+    	hash.put("e","RESERVED WORD");
+    	hash.put("eco","RESERVED WORD");
+    	hash.put("enquanto","RESERVED WORD");
+    	hash.put("entao","RESERVED WORD");
+    	hash.put("escolha","RESERVED WORD");
+    	hash.put("escreva","RESERVED WORD");
+    	hash.put("exp","RESERVED WORD");
+    	hash.put("faca","RESERVED WORD");
+    	hash.put("falso","RESERVED WORD");
+    	hash.put("fimalgoritmo","RESERVED WORD");
+    	hash.put("fimenquanto","RESERVED WORD");
+    	hash.put("fimescolha","RESERVED WORD");
+    	hash.put("fimfuncao","RESERVED WORD");
+    	hash.put("fimpara","RESERVED WORD");
+    	hash.put("fimprocedimento","RESERVED WORD");
+    	hash.put("fimrepita","RESERVED WORD");
+    	hash.put("fimse","RESERVED WORD");
+    	hash.put("funcao","RESERVED WORD");
+    	hash.put("grauprad","RESERVED WORD");
+    	hash.put("inicio","RESERVED WORD");
+    	hash.put("int","RESERVED WORD");
+    	hash.put("interrompa","RESERVED WORD");
+    	hash.put("leia","RESERVED WORD");
+    	hash.put("literal","RESERVED WORD");
+    	hash.put("log","RESERVED WORD");
+    	hash.put("logico","RESERVED WORD");
+    	hash.put("logn","RESERVED WORD");
+    	hash.put("maiusc","RESERVED WORD");
+    	hash.put("mensagem","RESERVED WORD");
+    	hash.put("minusc","RESERVED WORD");
+    	hash.put("nao","RESERVED WORD");
+    	hash.put("numerico","RESERVED WORD");
+    	hash.put("numpcarac","RESERVED WORD");
+    	hash.put("ou","RESERVED WORD");
+    	hash.put("outrocaso","RESERVED WORD");
+    	hash.put("para","RESERVED WORD");
+    	hash.put("passo","RESERVED WORD");
+    	hash.put("pausa","RESERVED WORD");
+    	hash.put("pi","RESERVED WORD");
+    	hash.put("pos","RESERVED WORD");
+    	hash.put("procedimento","RESERVED WORD");
+    	hash.put("quad","RESERVED WORD");
+    	hash.put("radpgrau","RESERVED WORD");
+    	hash.put("raizq","RESERVED WORD");
+    	hash.put("rand","RESERVED WORD");
+    	hash.put("randi","RESERVED WORD");
+    	hash.put("repita","RESERVED WORD");
+    	hash.put("se","RESERVED WORD");
+    	hash.put("sen","RESERVED WORD");
+    	hash.put("senao","RESERVED WORD");
+    	hash.put("timer","RESERVED WORD");
+    	hash.put("tan","RESERVED WORD");
+    	hash.put("verdadeiro","RESERVED WORD");
+    	hash.put("xou","RESERVED WORD");
     }
 
     //Get string
@@ -110,27 +111,28 @@ public class Automata {
             current = current.next(symbol);  
             if(current == States.S2) {
             	current = current.next(symbol); //Return to S0 after each final state
-            	System.out.println("STRING");
+            	System.out.println(" : STRING");
             }
             if(current == States.S4) {
             	current = current.next(symbol); 
-            	System.out.println("INTEGER");
+            	System.out.println(" : INTEGER");
             }
             if(current == States.S6) {
             	current = current.next(symbol); 
-            	System.out.println("REAL");
+            	System.out.println(" : REAL");
             }
             if(current == States.S8) {
             	current = current.next(symbol); 
-            	System.out.println("IDENTIFIER ou RESERVED");
-            	/*TODO
-            	 * Save the word as it passes through the states
-            	 * Look inside hash for this word
-            	 * If it is not inside hash, put it on as "IDENT"
-            	 * Otherwise show if it is RERSERVED or IDENTIFIER
-            	 */
+            	String word = current.getInput();
+            	if(!this.hash.containsKey(word)) {
+            		hash.put(word, "IDENTIFIER");
+            	}
+            	System.out.println(" : " + hash.get(word));
             }
-            	
+            if(current == States.S10) {
+            	current = current.next(symbol); 
+            	System.out.println(" : ERROR");
+            }
         }
     }
     

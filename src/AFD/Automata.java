@@ -1,5 +1,9 @@
 package AFD;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.nio.file.Path;
 import java.util.Hashtable;
 
 import AFD.Main.States;
@@ -13,12 +17,25 @@ public class Automata {
     private static final States REAL = States.S6;
     private static final States ERROR = States.S10;
 	
-    private final String str;
+    private String str;
     private Hashtable<String, String> hash;
     
     //Get input and create Hash
-    public Automata(String str) {
-        this.str = str;
+    public Automata(String name) {
+        this.str = name;
+        File file= new File(str);
+        //If file exists it's a path otherwise is a string to be validated
+        if(file.exists()) {
+        	try{
+        		BufferedReader buf = new BufferedReader(new FileReader(str));
+        		str = "";
+        		String line;
+        		while((line = buf.readLine()) != null) {
+        			str += line + '\n';
+        		}
+        	}
+        	catch(Exception e){};
+        }
         this.createHash();
     }
     
@@ -95,6 +112,7 @@ public class Automata {
     	hash.put("senao","RESERVED WORD");
     	hash.put("timer","RESERVED WORD");
     	hash.put("tan","RESERVED WORD");
+    	hash.put("var","RESERVED WORD");
     	hash.put("verdadeiro","RESERVED WORD");
     	hash.put("xou","RESERVED WORD");
     }
@@ -111,15 +129,15 @@ public class Automata {
             current = current.next(symbol);  
             if(current == States.S2) {
             	current = current.next(symbol); //Return to S0 after each final state
-            	System.out.println(" : STRING");
+            	System.out.println(" -> STRING");
             }
             if(current == States.S4) {
             	current = current.next(symbol); 
-            	System.out.println(" : INTEGER");
+            	System.out.println(" -> INTEGER");
             }
             if(current == States.S6) {
             	current = current.next(symbol); 
-            	System.out.println(" : REAL");
+            	System.out.println(" -> REAL");
             }
             if(current == States.S8) {
             	current = current.next(symbol); 
@@ -127,13 +145,17 @@ public class Automata {
             	if(!this.hash.containsKey(word)) {
             		hash.put(word, "IDENTIFIER");
             	}
-            	System.out.println(" : " + hash.get(word));
+            	System.out.println(" -> " + hash.get(word));
             }
-            if(current == States.S10) {
+            if(current == States.S11) {
             	current = current.next(symbol); 
-            	System.out.println(" : ERROR");
+            	System.out.println(" -> COMMENT");
+            }
+            if(current == States.S12) {
+            	current = current.next(symbol); 
+            	System.out.println(" -> ERROR");
             }
         }
     }
-    
+   
 }

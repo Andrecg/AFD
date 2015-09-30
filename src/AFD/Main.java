@@ -1,5 +1,7 @@
 package AFD;
 
+import java.io.File;
+
 public class Main {
 	
 	//Test if character is a number {0:9}
@@ -134,9 +136,10 @@ public class Main {
 				if(isNumber(symbol)) return S3;
 				else if(isAlph(symbol)) return S7;
 				else if(symbol == '"') return S1;
+				else if(symbol == '/') return S9;
 				else if(symbol == ' ') return S0;
 				else if(symbol == '\n') return S0;
-				else return S10; //ERROR
+				else return S12; //ERROR
 	        }
 
 			@Override
@@ -158,7 +161,7 @@ public class Main {
 				}
 				else {
 					read += symbol;
-					return S10; //ERROR
+					return S12; //ERROR
 				}
 	        }
 
@@ -196,7 +199,7 @@ public class Main {
 				}
 				else {
 					read += symbol;
-					return S10; //ERROR
+					return S12; //ERROR
 				}
 	        }
 
@@ -227,7 +230,7 @@ public class Main {
 					return S5;
 				}
 				else if(symbol == ' ' || symbol == '\n') return S6;
-				else return S10; //ERROR
+				else return S12; //ERROR
 	        }
 
 			@Override
@@ -259,7 +262,7 @@ public class Main {
 				else if(symbol == ' ' || symbol == '\n' || symbol == ':' || symbol == ',') return S8;
 				else {
 					read += symbol;
-					return S10;
+					return S12;
 				}
 	        }
 
@@ -283,7 +286,54 @@ public class Main {
 			
 		},
 		
-		S10 { //ERROR
+		S9 { 
+			@Override
+	        public State next(char symbol) {
+				if(symbol == '/') {
+					read += symbol;
+					return S10;
+				}
+				else return S12;
+	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
+			
+		},
+		
+		S10 { 
+			@Override
+	        public State next(char symbol) {
+				if(symbol == '\n') return S11;
+				else {
+					read += symbol;
+					return S10;
+				}
+	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
+			
+		},
+		
+		S11 { //COMMENT
+			@Override
+	        public State next(char symbol) {
+				System.out.print(read);
+				return S0;
+	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
+		},
+
+		S12 { //ERROR
 			@Override
 	        public State next(char symbol) {
 				System.out.print(read);
@@ -300,14 +350,15 @@ public class Main {
 	
 	public static void main(String[] args) {
 		//Run an example with several tokens inside one string 'simulating' a visuAlg file
-		Automata aut1 = new Automata(	'"' + "string" + '"' + 
+		/*Automata aut1 = new Automata(	'"' + "string" + '"' + 
 										" 1\n" +
 										"212311\n" + 
 										"1.0 " + 
 										"12323.01123 " + 
 										"algoritmo " +
 										"teste1:" +
-										"1A ");
+										"1A ");*/
+		Automata aut1 = new Automata("VisuAlg files\\teste.alg");
 		aut1.find();
 	}
 }

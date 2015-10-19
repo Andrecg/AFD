@@ -26,6 +26,12 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+/**
+ * Create a graphic interface
+ * @author Andre
+ * @author Aurelio
+ * @author Cesar
+ */
 public class Gui extends JFrame {
 
 	private JPanel contentPane;
@@ -52,6 +58,7 @@ public class Gui extends JFrame {
 	 * Create the frame.
 	 */
 	public Gui() {
+		//Create components
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -92,19 +99,25 @@ public class Gui extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table_3);
 	    contentPane.add(scrollPane, gbc_table_3);
 	     
+	    //Open File chooser when button is pressed
 		JButton btnNewButton = new JButton("Choose file...");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser chooser = new JFileChooser();
+				//Filter chooser for only alg files
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				        "ALG", "alg");
 				chooser.setFileFilter(filter);
 				chooser.setCurrentDirectory(new File("Visualg Files\\"));
 				int returnVal = chooser.showOpenDialog(btnNewButton.getParent());
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
+					 //Fill textField with path of file chose
 				     textField.setText(chooser.getSelectedFile().getName());
-				     Automata aut = new Automata(chooser.getSelectedFile().getPath());				    
+				     //Create automata with file chose
+				     Automata aut = new Automata(chooser.getSelectedFile().getPath());
+				     //Run automata
 				     aut.find();
+				     //Fill table with word and type lists' contents
 				     String model[] = {"WORD","TYPE"};
 				     table_3.setModel(new DefaultTableModel(model,(int)aut.getType().size()) {
 				    	 @Override

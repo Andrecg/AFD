@@ -7,9 +7,15 @@ import java.nio.file.Path;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
+/**
+ * Create an automata for lexical analysis
+ * @author Andre
+ * @author Aurelio
+ * @author Cesar
+ */
 public class Automata {
 
-	//Defining constants for initial and final states
+	//Defining constants for specials states
 	private static final States INITIAL_STATE = States.S0;
     private static final States STRING = States.S2;
     private static final States INTEGER = States.S4;
@@ -18,10 +24,16 @@ public class Automata {
 	
     private String str;
     
+    //Hash to store reserved words and identifiers 
     static Hashtable<String, String> hash;
+    //List to store 
     static LinkedList<String> word, type;
     
-	//Test if character is a number {0:9}
+    /**
+     * Test if character is a number {0:9} 
+     * @param symbol A character
+     * @return true of false
+     */
 	static boolean isNumber(char symbol) {
 		switch(symbol) {
 			case '0':
@@ -40,7 +52,11 @@ public class Automata {
 		}
 	}
 	
-	//Test if character is a letter {Aa:zZ}
+	/**
+     * Test if character is a letter {Aa:zZ}
+     * @param symbol A character
+     * @return true of false
+     */
 	static boolean isAlph(char symbol) {
 		switch(symbol) {
 			case 'a':
@@ -66,6 +82,7 @@ public class Automata {
 			case 'u':
 			case 'v':
 			case 'w':
+			case 'x':
 			case 'y':
 			case 'z':
 			case 'A':
@@ -91,6 +108,7 @@ public class Automata {
 			case 'U':
 			case 'V':
 			case 'W':
+			case 'X':
 			case 'Y':
 			case 'Z':
 				return true;
@@ -99,8 +117,11 @@ public class Automata {
 		}
 	}
 	
-	//Test if character is a special character
-	
+	/**
+     * Test if character is a special character
+     * @param symbol A character
+     * @return true of false
+     */
 	static boolean isSpecial(char symbol) {
 		switch(symbol) {
 			case '!':
@@ -141,12 +162,32 @@ public class Automata {
 		
 	}
 	
+	/**
+     * Test if character is an operator
+     * @param symbol A character
+     * @return true of false
+     */
+	static boolean isOper(char symbol) {
+		switch(symbol) {
+			case '=':
+			case '+':
+			case '-':
+			case '\\':
+				return true;
+			default:
+				return false;
+		}
+	}
+	
 	static String read = "";
 	
-	
-	enum States implements State {
-		
-		//All final states (S2,S4,S6,S8) return to Initial State (S0)
+	/**
+	 * All states are describes here by an enumerator.
+	 * Each state has its decision maker and a method
+	 * to print what has been read until that state
+	 */
+	enum States implements State {	
+		//All final states (S2,S4,S6,S8,S11,S12,S13) return to Initial State (S0)
 		S0 { //INITIAL STATE
 			@Override
 	        public State next(char symbol) {
@@ -154,6 +195,7 @@ public class Automata {
 				read += symbol;
 				if(isNumber(symbol)) return S3;
 				else if(isAlph(symbol)) return S7;
+				else if(isOper(symbol)) return S13;
 				else if(symbol == '"') return S1;
 				else if(symbol == '/') return S9;
 				else if(symbol == ' ') return S0;
@@ -266,8 +308,7 @@ public class Automata {
 		
 		S6 { //REAL
 			@Override
-	        public State next(char symbol) {
-				
+	        public State next(char symbol) {	
 				System.out.print(read);
 				return S0;
 	        }
@@ -321,6 +362,9 @@ public class Automata {
 				if(symbol == '/') {
 					read += symbol;
 					return S10;
+				}
+				else if(symbol == ' ' || symbol == '\n') {
+					return S13;
 				}
 				else return S12;
 	        }
@@ -376,21 +420,43 @@ public class Automata {
 				return read;
 			}
 			
+		},
+		
+		S13 { //OPERATOR 
+			@Override
+	        public State next(char symbol) {
+				word.add(read);
+				System.out.print(read);
+				return S0;
+	        }
+
+			@Override
+			public String getInput() {
+				return read;
+			}
+			
 		};
 	}
   
-    //Get input and create Hash
+	/**
+	 * Constructor for automata 
+	 * @param name Path of file or String to be analyzed 
+ 	 */
     public Automata(String name) {
+    	//Create lists
     	word = new LinkedList<String>();
     	type = new LinkedList<String>();
         this.str = name;
+        //Try to open file
         File file= new File(str);
-        //If file exists it's a path otherwise is a string to be validated
+        //If file exists it is a path otherwise is a string to be validated
         if(file.exists()) {
         	try{
         		BufferedReader buf = new BufferedReader(new FileReader(str));
         		str = "";
         		String line;
+        		//Read line by line and stores it in str
+        		//separated by new line character
         		while((line = buf.readLine()) != null) {
         			str += line + '\n';
         		}
@@ -400,7 +466,9 @@ public class Automata {
         this.createHash();
     }
     
-    //Initialing Hash
+    /**
+     * Initialing Hash with reserved words
+     */
     private void createHash() {
     	hash = new Hashtable<String, String>();
     	hash.put("aleatorio","RESERVED WORD");
@@ -441,7 +509,7 @@ public class Automata {
     	hash.put("funcao","RESERVED WORD");
     	hash.put("grauprad","RESERVED WORD");
     	hash.put("inicio","RESERVED WORD");
-    	hash.put("int","RESERVED WORD");
+    	hash.put("inteiro","RESERVED WORD");
     	hash.put("interrompa","RESERVED WORD");
     	hash.put("leia","RESERVED WORD");
     	hash.put("literal","RESERVED WORD");
@@ -467,6 +535,7 @@ public class Automata {
     	hash.put("raizq","RESERVED WORD");
     	hash.put("rand","RESERVED WORD");
     	hash.put("randi","RESERVED WORD");
+    	hash.put("real","RESERVED WORD");
     	hash.put("repita","RESERVED WORD");
     	hash.put("se","RESERVED WORD");
     	hash.put("sen","RESERVED WORD");
@@ -478,12 +547,17 @@ public class Automata {
     	hash.put("xou","RESERVED WORD");
     }
 
-    //Get string
+    /**
+     * Get string 
+     * @return String
+     */
     public String getString() {
         return str;
     }
  
-    //Run each character of string through AFD
+    /**
+     * Run each character of string through AFD 
+     */
     public void find() {
     	State current = INITIAL_STATE;
         for (char symbol : str.toCharArray()) {
@@ -522,13 +596,26 @@ public class Automata {
             	type.add("ERROR");
             	System.out.println(" -> ERROR");
             }
+            if(current == States.S13) {
+            	current = current.next(symbol);
+            	type.add("OPERATOR");
+            	System.out.println(" -> OPERATOR");
+            }
         }
     }
    
+    /**
+     * Get Word list
+     * @return word list
+     */
     public LinkedList<String> getWord() {
     	return Automata.word;
     }
     
+    /**
+     * Get type list
+     * @return type list
+     */
     public LinkedList<String> getType() {
     	return Automata.type;
     }
